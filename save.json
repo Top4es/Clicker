@@ -1,0 +1,31 @@
+{
+  "balance": 5.0,
+  "total_clicks": 5,
+  "click_power": 1.0,
+  "passive_income": 0.0,
+  "click_per_level": 1000.0,
+  "passive_upgrades": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "click_upgrades": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "level_upgrades": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}
