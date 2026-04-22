@@ -20,14 +20,14 @@ class CryptoClickerLogic:
     def __init__(self):
         # Данные уровней
         self.levels = [
-            {"name": "Dodgecoin", "min": 0, "max": 5000, "icon": "Ð", "svg": "dogecoin.svg", "theme": 1},
-            {"name": "Litecoin", "min": 5000, "max": 14000, "icon": "Ł", "svg": "litecoin.svg", "theme": 1},
-            {"name": "Solana", "min": 14000, "max": 26000, "icon": "◎", "svg": "solana.svg", "theme": 1},
-            {"name": "Binance Coin", "min": 26000, "max": 42000, "icon": "BNB", "svg": "BNB.svg", "theme": 2},
-            {"name": "Ripple", "min": 42000, "max": 62000, "icon": "XRP", "svg": "Ripple.svg", "theme": 2},
-            {"name": "Tether", "min": 62000, "max": 86000, "icon": "₮", "svg": "Tether.svg", "theme": 2},
-            {"name": "Etherium", "min": 86000, "max": 114000, "icon": "Ξ", "svg": "ethereum.svg", "theme": 3},
-            {"name": "Bitcoin", "min": 114000, "max": float('inf'), "icon": "₿", "svg": "bitcoin.svg", "theme": 3}
+            {"name": "Dodgecoin", "min": 0, "max": 10000, "icon": "Ð", "svg": "dogecoin.svg", "theme": 1},
+            {"name": "Litecoin", "min": 10000, "max": 30000, "icon": "Ł", "svg": "litecoin.svg", "theme": 1},
+            {"name": "Solana", "min": 30000, "max": 65000, "icon": "◎", "svg": "solana.svg", "theme": 1},
+            {"name": "Binance Coin", "min": 65000, "max": 110000, "icon": "BNB", "svg": "BNB.svg", "theme": 2},
+            {"name": "Ripple", "min": 110000, "max": 170000, "icon": "XRP", "svg": "Ripple.svg", "theme": 2},
+            {"name": "Tether", "min": 170000, "max": 250000, "icon": "₮", "svg": "Tether.svg", "theme": 2},
+            {"name": "Etherium", "min": 250000, "max": 350000, "icon": "Ξ", "svg": "ethereum.svg", "theme": 3},
+            {"name": "Bitcoin", "min": 350000, "max": float('inf'), "icon": "₿", "svg": "bitcoin.svg", "theme": 3}
         ]
 
         # Игровые показатели
@@ -59,7 +59,11 @@ class CryptoClickerLogic:
             ["Майнинг ферма", 100, 25.0, 0],
             ["Облачный майнинг", 250, 100.0, 0],
             ["ASIC устройство", 1000, 500.0, 0],
-            ["Квантовый компьютер", 5000, 2500.0, 0]
+            ["Квантовый компьютер", 5000, 2500.0, 0],
+            ["Серверный дата-центр", 15000, 12000.0, 0],
+            ["Нейросеть майнинга", 50000, 60000.0, 0],
+            ["Межпланетная сеть", 150000, 300000.0, 0],
+            ["Вселенский хешрейт", 500000, 1500000.0, 0]
         ]
 
         self.click_upgrades = [
@@ -68,7 +72,11 @@ class CryptoClickerLogic:
             ["Супер клик", 150, 4.0, 0],
             ["Мега клик", 500, 10.0, 0],
             ["Гига клик", 2000, 30.0, 0],
-            ["Ультимативный клик", 10000, 100.0, 0]
+            ["Ультимативный клик", 10000, 100.0, 0],
+            ["Палец бога", 35000, 350.0, 0],
+            ["Кликовый взрыв", 120000, 1200.0, 0],
+            ["Реальность искажена", 400000, 4000.0, 0],
+            ["Бесконечный клик", 1200000, 15000.0, 0]
         ]
 
         self.level_upgrades = [
@@ -77,7 +85,11 @@ class CryptoClickerLogic:
             ["Ускорение уровня", 200, 4, 0],
             ["Прокачка опыта", 600, 8, 0],
             ["Мастер уровней", 2500, 15, 0],
-            ["Легенда прокачки", 10000, 30, 0]
+            ["Легенда прокачки", 10000, 30, 0],
+            ["Знание вселенной", 40000, 65, 0],
+            ["Трансцендентность", 140000, 140, 0],
+            ["Время ускорено", 450000, 300, 0],
+            ["Создатель реальности", 1500000, 700, 0]
         ]
 
     def get_current_level(self):
@@ -153,13 +165,14 @@ class CryptoClickerLogic:
             self.balance -= cost
             upgrade[3] += 1
 
-            # Применяем эффект улучшения
+            # Применяем эффект улучшения (растет в 2 раза за каждый уровень, минимум 1)
+            added_effect = max(1, upgrade[2] * (1 + upgrade[3]))
             if upgrade_type == "passive":
-                self.passive_income += upgrade[2]
+                self.passive_income += added_effect
             elif upgrade_type == "click":
-                self.click_power += upgrade[2]
+                self.click_power += added_effect
             elif upgrade_type == "level":
-                self.click_per_level += upgrade[2]
+                self.click_per_level += added_effect
 
             return True
         return False
@@ -274,7 +287,7 @@ class ShopWindow(QWidget):
         layout = QHBoxLayout(widget)
 
         level = upgrade[3]
-        effect = upgrade[2] * (level + 1)
+        effect = max(1, upgrade[2] * (1 + level))
         cost = self.logic.get_upgrade_cost(upgrade)
 
         level_idx, level_data = self.logic.get_current_level()
@@ -436,9 +449,13 @@ class MainWindow(QMainWindow):
 
     def keyPressEvent(self, event):
         """Обработка нажатия клавиш"""
-        if event.key() == Qt.Key.Key_Space and self.logic.button_challenge_active and self.logic.button_challenge_required == "space":
-            self.logic.button_last_success = time.time()
-            self.process_valid_click()
+        if event.key() == Qt.Key.Key_Space:
+            if self.logic.button_challenge_active:
+                if self.logic.button_challenge_required == "space":
+                    self.logic.button_last_success = time.time()
+                    self.process_valid_click()
+            else:
+                self.process_valid_click()
             
     def handle_mouse_click(self, event):
         """Обработка кликов мыши по кнопке"""
@@ -450,7 +467,7 @@ class MainWindow(QMainWindow):
                 self.logic.button_last_success = time.time()
                 self.process_valid_click()
         else:
-            if event.button() == Qt.MouseButton.LeftButton:
+            if event.button() in (Qt.MouseButton.LeftButton, Qt.MouseButton.RightButton):
                 self.process_valid_click()
     
     def process_valid_click(self):
@@ -660,12 +677,14 @@ class MainWindow(QMainWindow):
                 self.minigame_countdown.start(1000)
                 
             elif game_type == 3:
-                # Мини-игра: заработать 50 монет за 7 секунд
+                # Мини-игра: заработать монеты за N секунд
+                seconds = random.randint(5, 10)
+                target = int(self.logic.click_power * (seconds + 5))
                 self.active_minigame = {
                     "type": "earn_challenge",
-                    "target": 50,
+                    "target": max(target, 30),
                     "start_balance": self.logic.balance,
-                    "time_left": 7
+                    "time_left": seconds
                 }
                 self.minigame_countdown = QTimer()
                 self.minigame_countdown.timeout.connect(self.minigame_tick)
