@@ -238,7 +238,7 @@ class ShopWindow(QWidget):
                     color: #66FCF1;
                 }
             """)
-        elif theme_level in (2,3):
+        elif theme_level == 2:
             self.setStyleSheet("""
                 QWidget {
                     background-color: #2D1B4E;
@@ -259,7 +259,7 @@ class ShopWindow(QWidget):
                     color: #FFD700;
                 }
             """)
-        else:
+        elif theme_level in (3):
             self.setStyleSheet("""
                 QWidget {
                     background-color: #0A192F;
@@ -854,7 +854,7 @@ class MainWindow(QMainWindow):
             self.stats_label.setStyleSheet("color: #C5C6C7;")
             self.bonuses_label.setStyleSheet("color: #FFD700;")
 
-        elif theme_level in (2,3):
+        elif theme_level == 2:
             self.level_progress.setStyleSheet("""
                 QProgressBar {
                     background-color: #16213E;
@@ -915,7 +915,7 @@ class MainWindow(QMainWindow):
             self.stats_label.setStyleSheet("color: #FFB347;")
             self.bonuses_label.setStyleSheet("color: #FFFFFF;")
 
-        else:
+        elif theme_level == 3:
             self.level_progress.setStyleSheet("""
                 QProgressBar {
                     background-color: #1A1A1A;

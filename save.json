@@ -3,7 +3,7 @@
   "total_clicks": 2,
   "click_power": 1.0,
   "passive_income": 0.0,
-  "click_per_level": 1.0,
+  "click_per_level": 1000.0,
   "passive_upgrades": [
     0,
     0,
