@@ -11,8 +11,14 @@ from PyQt6.QtCore import Qt, QTimer, QPropertyAnimation, QPoint
 from PyQt6.QtGui import QFont, QColor, QLinearGradient, QPainter
 from PyQt6.QtSvgWidgets import QSvgWidget
 
-# Получаем абсолютный путь к папке с файлом main.py
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Получаем абсолютный путь к папке с исполняемым файлом
+import sys
+if getattr(sys, 'frozen', False):
+    # При запуске из EXE файла
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    # При запуске из исходного кода
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class CryptoClickerLogic:
     """Класс логики игры, содержит все данные и расчеты"""
